@@ -36,3 +36,5 @@ current_session=$(tmux display-message -p '#{session_name}')
 if [ "$current_session" != "$target_session" ]; then
     tmux switch-client -t "$target"
 fi
+
+tmux refresh-client -S

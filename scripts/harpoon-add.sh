@@ -17,4 +17,5 @@ if grep -qF "${session}:${window_index}:" "$DATA_FILE" 2>/dev/null; then
 fi
 
 echo "$entry" >> "$DATA_FILE"
+tmux refresh-client -S
 tmux display-message "harpoon: added [${session}:${window_index}] ${window_name}"
