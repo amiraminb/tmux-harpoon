@@ -44,10 +44,11 @@ render() {
         local session window_index window_name
         session=$(echo "$entry" | cut -d: -f1)
         window_index=$(echo "$entry" | cut -d: -f2)
-        window_name=$(echo "$entry" | cut -d: -f3-)
 
-        local display="${session}:${window_index}"
-        [ -n "$window_name" ] && display="${display} (${window_name})"
+        window_name=$(tmux display-message -t "${session}:${window_index}" -p '#{window_name}' 2>/dev/null)
+        [ -z "$window_name" ] && window_name="[stale]"
+
+        local display="${session}:${window_index} (${window_name})"
 
         local slot=$((i + 1))
 
