@@ -9,6 +9,7 @@ Inspired by [ThePrimeagen's harpoon](https://github.com/ThePrimeagen/harpoon) fo
 - Jump to any bookmarked window by slot number (across sessions)
 - Interactive floating popup menu with vim-style keybindings
 - Cut and paste to rearrange entries (`dd` / `p`)
+- Status bar integration
 - Session-lifetime persistence (resets when tmux server restarts)
 
 ## Requirements
@@ -43,3 +44,13 @@ tmux source-file ~/.config/tmux/tmux.conf
 | `prefix` `h` `r` | Remove current window from harpoon |
 | `prefix` `h` `m` | Open harpoon menu |
 | `prefix` `1-9` | Jump to harpoon slot 1–9 |
+
+## Status Bar
+
+To show harpooned windows in your status bar, add the status script to your `status-left` or `status-right`:
+
+```bash
+set -g status-left "[#S] #(/path/to/tmux-harpoon/scripts/harpoon-status.sh) "
+```
+
+The current window is highlighted, others are dimmed.
