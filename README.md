@@ -1,6 +1,7 @@
 # tmux-harpoon
 
-Quickly bookmark and jump between tmux windows — inspired by [ThePrimeagen's harpoon](https://github.com/ThePrimeagen/harpoon) for neovim.
+Quickly bookmark and jump between tmux windows.
+Inspired by [ThePrimeagen's harpoon](https://github.com/ThePrimeagen/harpoon) for neovim.
 
 ## Features
 
