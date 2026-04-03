@@ -19,4 +19,5 @@ tmp=$(mktemp)
 grep -vF "$pattern" "$DATA_FILE" > "$tmp"
 mv "$tmp" "$DATA_FILE"
 
+tmux refresh-client -S
 tmux display-message "harpoon: removed [${session}:${window_index}]"
