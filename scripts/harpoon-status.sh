@@ -18,7 +18,10 @@ while IFS= read -r line; do
     [ -z "$line" ] && continue
     session=$(echo "$line" | cut -d: -f1)
     window=$(echo "$line" | cut -d: -f2)
-    name=$(echo "$line" | cut -d: -f3-)
+    name=$(tmux display-message -t "${session}:${window}" -p '#{window_name}' 2>/dev/null)
+    if [ -z "$name" ]; then
+        name="[stale]"
+    fi
 
     if [ "$session" = "$current_session" ] && [ "$window" = "$current_window" ]; then
         items="${items}#[fg=#5e8d87,bold]${slot}:${name}#[fg=default,nobold] "
