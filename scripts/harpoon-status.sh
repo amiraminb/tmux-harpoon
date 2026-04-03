@@ -12,7 +12,7 @@ fi
 current_session=$(tmux display-message -p '#{session_name}')
 current_window=$(tmux display-message -p '#{window_index}')
 
-output=""
+items=""
 slot=1
 while IFS= read -r line; do
     [ -z "$line" ] && continue
@@ -21,11 +21,11 @@ while IFS= read -r line; do
     name=$(echo "$line" | cut -d: -f3-)
 
     if [ "$session" = "$current_session" ] && [ "$window" = "$current_window" ]; then
-        output="${output}#[fg=#5e8d87,bold]${slot}:${name}#[fg=default,nobold] "
+        items="${items}#[fg=#5e8d87,bold]${slot}:${name}#[fg=default,nobold] "
     else
-        output="${output}#[fg=#7EA7C4,dim]${slot}:${name}#[fg=default,nodim] "
+        items="${items}#[fg=#7EA7C4,dim]${slot}:${name}#[fg=default,nodim] "
     fi
     slot=$((slot + 1))
 done < "$DATA_FILE"
 
-echo "$output"
+echo "[H: ${items}]"
