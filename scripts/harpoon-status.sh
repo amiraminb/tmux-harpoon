@@ -25,7 +25,7 @@ while IFS= read -r line; do
 
     label="${slot}:[${session}]${name}"
     if [ "$window_id" = "$current_window_id" ]; then
-        items="${items}#[fg=#5e8d87,bold]${label}#[fg=default,nobold] "
+        items="${items}#[fg=#7EA7C4,bold]${label}#[fg=default,nobold] "
     else
         items="${items}#[fg=#7EA7C4,dim]${label}#[fg=default,nodim] "
     fi
