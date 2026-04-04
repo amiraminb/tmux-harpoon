@@ -10,13 +10,12 @@ if [ ! -s "$DATA_FILE" ]; then
 fi
 
 tmp=$(mktemp)
+all_window_ids=$(tmux list-windows -a -F '#{window_id}' 2>/dev/null)
 while IFS= read -r line; do
     [ -z "$line" ] && continue
-    session=$(echo "$line" | cut -d: -f1)
-    window=$(echo "$line" | cut -d: -f2)
+    window_id=$(echo "$line" | cut -d: -f2)
 
-    if tmux has-session -t "$session" 2>/dev/null && \
-       tmux list-windows -t "$session" -F '#{window_index}' 2>/dev/null | grep -qx "$window"; then
+    if echo "$all_window_ids" | grep -qx "$window_id"; then
         echo "$line" >> "$tmp"
     fi
 done < "$DATA_FILE"

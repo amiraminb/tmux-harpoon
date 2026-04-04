@@ -47,12 +47,12 @@ render() {
         local entry="${entries[$i]}"
         local session window_index window_name
         session=$(echo "$entry" | cut -d: -f1)
-        window_index=$(echo "$entry" | cut -d: -f2)
+        window_id=$(echo "$entry" | cut -d: -f2)
 
-        window_name=$(tmux display-message -t "${session}:${window_index}" -p '#{window_name}' 2>/dev/null)
+        window_name=$(tmux display-message -t "$window_id" -p '#{window_name}' 2>/dev/null)
         [ -z "$window_name" ] && window_name="[stale]"
 
-        local display="${session}:${window_index} (${window_name})"
+        local display="${session} (${window_name})"
 
         local slot=$((i + 1))
 
@@ -71,8 +71,7 @@ jump_to_entry() {
     local entry="${entries[$cursor]}"
     local target_session target_window target
     target_session=$(echo "$entry" | cut -d: -f1)
-    target_window=$(echo "$entry" | cut -d: -f2)
-    target="${target_session}:${target_window}"
+    target_window_id=$(echo "$entry" | cut -d: -f2)
 
     save_entries
 
@@ -85,8 +84,8 @@ jump_to_entry() {
     if [ "$current_session" != "$target_session" ]; then
         tmux switch-client -t "$target_session"
     fi
-    tmux select-window -t "$target" 2>/dev/null || \
-        tmux display-message "harpoon: window ${target} no longer exists"
+    tmux select-window -t "$target_window_id" 2>/dev/null || \
+        tmux display-message "harpoon: window no longer exists"
 }
 
 clamp_cursor() {

@@ -19,22 +19,21 @@ if [ -z "$entry" ]; then
 fi
 
 target_session=$(echo "$entry" | cut -d: -f1)
-target_window=$(echo "$entry" | cut -d: -f2)
-target="${target_session}:${target_window}"
+target_window_id=$(echo "$entry" | cut -d: -f2)
 
 if ! tmux has-session -t "$target_session" 2>/dev/null; then
     tmux display-message "harpoon: session '${target_session}' no longer exists"
     exit 0
 fi
 
-if ! tmux select-window -t "$target" 2>/dev/null; then
-    tmux display-message "harpoon: window ${target} no longer exists"
+if ! tmux select-window -t "$target_window_id" 2>/dev/null; then
+    tmux display-message "harpoon: window no longer exists"
     exit 0
 fi
 
 current_session=$(tmux display-message -p '#{session_name}')
 if [ "$current_session" != "$target_session" ]; then
-    tmux switch-client -t "$target"
+    tmux switch-client -t "$target_session"
 fi
 
 tmux refresh-client -S

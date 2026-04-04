@@ -6,18 +6,18 @@ source "$CURRENT_DIR/helpers.sh"
 DATA_FILE=$(harpoon_data_file)
 
 session=$(tmux display-message -p '#{session_name}')
-window_index=$(tmux display-message -p '#{window_index}')
+window_id=$(tmux display-message -p '#{window_id}')
 
-pattern="${session}:${window_index}:"
+entry="${session}:${window_id}"
 
-if ! grep -qF "$pattern" "$DATA_FILE" 2>/dev/null; then
+if ! grep -qx "$entry" "$DATA_FILE" 2>/dev/null; then
     tmux display-message "harpoon: not in list"
     exit 0
 fi
 
 tmp=$(mktemp)
-grep -vF "$pattern" "$DATA_FILE" > "$tmp"
+grep -vx "$entry" "$DATA_FILE" > "$tmp"
 mv "$tmp" "$DATA_FILE"
 
 tmux refresh-client -S
-tmux display-message "harpoon: removed [${session}:${window_index}]"
+tmux display-message "harpoon: removed"
