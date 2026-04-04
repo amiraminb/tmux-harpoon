@@ -6,6 +6,7 @@ source "$CURRENT_DIR/helpers.sh"
 DATA_FILE=$(harpoon_data_file)
 
 if [ ! -s "$DATA_FILE" ]; then
+    echo "[H: ]"
     exit 0
 fi
 
