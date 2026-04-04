@@ -28,24 +28,26 @@ save_entries() {
 }
 
 render() {
-    printf "\033[H\033[2J"
+    local buf=""
     local total=${#entries[@]}
 
-    printf "\033[1;36m  tmux-harpoon\033[0m"
+    buf+="\033[H\033[J"
+    buf+="\033[1;36m  tmux-harpoon\033[0m"
     if [ -n "$cut_entry" ]; then
-        printf "  \033[33m[cut: %s]\033[0m" "$cut_entry"
+        buf+="  \033[33m[cut: ${cut_entry}]\033[0m"
     fi
-    printf "\n"
-    printf "\033[2m  ─────────────────────────────\033[0m\n"
+    buf+="\n"
+    buf+="\033[2m  ─────────────────────────────\033[0m\n"
 
     if [ "$total" -eq 0 ]; then
-        printf "\033[2m  (empty — press q to close)\033[0m\n"
+        buf+="\033[2m  (empty — press q to close)\033[0m\n"
+        printf '%b' "$buf"
         return
     fi
 
     for i in "${!entries[@]}"; do
         local entry="${entries[$i]}"
-        local session window_index window_name
+        local session window_id window_name
         session=$(echo "$entry" | cut -d: -f1)
         window_id=$(echo "$entry" | cut -d: -f2)
 
@@ -53,18 +55,18 @@ render() {
         [ -z "$window_name" ] && window_name="[stale]"
 
         local display="${session} (${window_name})"
-
         local slot=$((i + 1))
 
         if [ "$i" -eq "$cursor" ]; then
-            printf "\033[1;32m  %d. %s\033[0m\n" "$slot" "$display"
+            buf+="\033[1;32m  ${slot}. ${display}\033[0m\n"
         else
-            printf "  \033[2m%d.\033[0m %s\n" "$slot" "$display"
+            buf+="  \033[2m${slot}.\033[0m ${display}\n"
         fi
     done
 
-    printf "\033[2m  ─────────────────────────────\033[0m\n"
-    printf "\033[2m  j/k:move  dd:cut  p/P:paste below/above  enter:jump  q:quit\033[0m\n"
+    buf+="\033[2m  ─────────────────────────────\033[0m\n"
+    buf+="\033[2m  j/k:move  dd:cut  p/P:paste below/above  enter:jump  q:quit\033[0m\n"
+    printf '%b' "$buf"
 }
 
 jump_to_entry() {
