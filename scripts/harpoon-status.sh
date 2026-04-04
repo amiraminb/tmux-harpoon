@@ -23,7 +23,7 @@ while IFS= read -r line; do
         name="[stale]"
     fi
 
-    label="${slot}: [${session}] ${name}"
+    label="${slot}:[${session}]${name}"
     if [ "$window_id" = "$current_window_id" ]; then
         items="${items}#[fg=#5e8d87,bold]${label}#[fg=default,nobold] "
     else
