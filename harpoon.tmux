@@ -13,4 +13,4 @@ for i in $(seq 1 9); do
     tmux bind-key "$i" run-shell "$SCRIPTS_DIR/harpoon-jump.sh $i"
 done
 
-tmux set-hook -g window-closed "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
+tmux set-hook -g window-unlinked "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
