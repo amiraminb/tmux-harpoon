@@ -64,7 +64,7 @@ render() {
     done
 
     printf "\033[2m  ─────────────────────────────\033[0m\n"
-    printf "\033[2m  j/k:move  dd:cut  p:paste  enter:jump  q:quit\033[0m\n"
+    printf "\033[2m  j/k:move  dd:cut  p/P:paste below/above  enter:jump  q:quit\033[0m\n"
 }
 
 jump_to_entry() {
@@ -151,24 +151,30 @@ while true; do
                 last_key="d"
             fi
             ;;
-        p)
+        p|P)
             last_key=""
-            if [ -n "$cut_entry" ] && [ ${#entries[@]} -ge 0 ]; then
-                # Insert after cursor position
-                local_insert=$((cursor + 1))
+            if [ -n "$cut_entry" ]; then
                 new_entries=()
-                for i in "${!entries[@]}"; do
-                    new_entries+=("${entries[$i]}")
-                    if [ "$i" -eq "$cursor" ]; then
-                        new_entries+=("$cut_entry")
-                    fi
-                done
-                # If entries is empty or cursor is at end
                 if [ ${#entries[@]} -eq 0 ]; then
                     new_entries=("$cut_entry")
+                    cursor=0
+                elif [ "$key" = "P" ]; then
+                    for i in "${!entries[@]}"; do
+                        if [ "$i" -eq "$cursor" ]; then
+                            new_entries+=("$cut_entry")
+                        fi
+                        new_entries+=("${entries[$i]}")
+                    done
+                else
+                    for i in "${!entries[@]}"; do
+                        new_entries+=("${entries[$i]}")
+                        if [ "$i" -eq "$cursor" ]; then
+                            new_entries+=("$cut_entry")
+                        fi
+                    done
+                    cursor=$((cursor + 1))
                 fi
                 entries=("${new_entries[@]}")
-                cursor=$((local_insert > ${#entries[@]} - 1 ? ${#entries[@]} - 1 : local_insert))
                 cut_entry=""
                 save_entries
             fi
