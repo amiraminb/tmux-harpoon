@@ -16,16 +16,18 @@ items=""
 slot=1
 while IFS= read -r line; do
     [ -z "$line" ] && continue
+    session=$(echo "$line" | cut -d: -f1)
     window_id=$(echo "$line" | cut -d: -f2)
     name=$(tmux display-message -t "$window_id" -p '#{window_name}' 2>/dev/null)
     if [ -z "$name" ]; then
         name="[stale]"
     fi
 
+    label="${session}:${name}"
     if [ "$window_id" = "$current_window_id" ]; then
-        items="${items}#[fg=#5e8d87,bold]${slot}:${name}#[fg=default,nobold] "
+        items="${items}#[fg=#5e8d87,bold]${slot}:${label}#[fg=default,nobold] "
     else
-        items="${items}#[fg=#7EA7C4,dim]${slot}:${name}#[fg=default,nodim] "
+        items="${items}#[fg=#7EA7C4,dim]${slot}:${label}#[fg=default,nodim] "
     fi
     slot=$((slot + 1))
 done < "$DATA_FILE"

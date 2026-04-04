@@ -14,3 +14,4 @@ for i in $(seq 1 9); do
 done
 
 tmux set-hook -g window-unlinked "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
+tmux set-hook -g after-select-window "refresh-client -S"
