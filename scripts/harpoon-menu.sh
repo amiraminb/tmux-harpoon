@@ -20,7 +20,11 @@ load_entries() {
 }
 
 save_entries() {
-    printf '%s\n' "${entries[@]}" > "$DATA_FILE"
+    if [ ${#entries[@]} -eq 0 ]; then
+        > "$DATA_FILE"
+    else
+        printf '%s\n' "${entries[@]}" > "$DATA_FILE"
+    fi
 }
 
 render() {
