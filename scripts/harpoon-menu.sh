@@ -28,7 +28,7 @@ save_entries() {
 }
 
 render() {
-    clear
+    printf "\033[H\033[2J"
     local total=${#entries[@]}
 
     printf "\033[1;36m  tmux-harpoon\033[0m"
