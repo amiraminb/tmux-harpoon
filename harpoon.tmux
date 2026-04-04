@@ -12,3 +12,5 @@ tmux bind-key -T harpoon m display-popup -E -w 60 -h 20 "$SCRIPTS_DIR/harpoon-me
 for i in $(seq 1 9); do
     tmux bind-key "$i" run-shell "$SCRIPTS_DIR/harpoon-jump.sh $i"
 done
+
+tmux set-hook -g window-closed "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
