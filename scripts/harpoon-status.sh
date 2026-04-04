@@ -23,11 +23,11 @@ while IFS= read -r line; do
         name="[stale]"
     fi
 
-    label="${session}:${name}"
+    label="${slot}: [${session}] ${name}"
     if [ "$window_id" = "$current_window_id" ]; then
-        items="${items}#[fg=#5e8d87,bold]${slot}:${label}#[fg=default,nobold] "
+        items="${items}#[fg=#5e8d87,bold]${label}#[fg=default,nobold] "
     else
-        items="${items}#[fg=#7EA7C4,dim]${slot}:${label}#[fg=default,nodim] "
+        items="${items}#[fg=#7EA7C4,dim]${label}#[fg=default,nodim] "
     fi
     slot=$((slot + 1))
 done < "$DATA_FILE"
