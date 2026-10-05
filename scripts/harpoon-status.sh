@@ -6,7 +6,6 @@ source "$CURRENT_DIR/helpers.sh"
 DATA_FILE=$(harpoon_data_file)
 
 if [ ! -s "$DATA_FILE" ]; then
-    echo "[H: ]"
     exit 0
 fi
 
@@ -29,11 +28,11 @@ while IFS= read -r line; do
 
     label="${slot}:[${session}]${name}"
     if [ "$window_id" = "$current_window_id" ]; then
-        items="${items}#[fg=#a3d9a5]${label}#[fg=default] "
+        items="${items}#[range=user|h${slot}]#[fg=#E6A07A]${label}#[fg=default]#[norange] "
     else
-        items="${items}#[fg=#6885a0]${label}#[fg=default] "
+        items="${items}#[range=user|h${slot}]#[fg=#8B949E]${label}#[fg=default]#[norange] "
     fi
     slot=$((slot + 1))
 done < "$DATA_FILE"
 
-echo "[H: ${items}]"
+echo "${items% }"
