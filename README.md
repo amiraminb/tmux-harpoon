@@ -79,7 +79,7 @@ bind the click, so add this with `set -g mouse on`:
 bind -T root MouseDown1Status if-shell -F '#{m/r:^h[1-9]$,#{mouse_status_range}}' {
     run-shell "/path/to/tmux-harpoon/scripts/harpoon-jump.sh #{s/^h//:#{mouse_status_range}}"
 } {
-    select-window -t =
+    switch-client -t =
 }
 ```
 
