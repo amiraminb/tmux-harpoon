@@ -6,7 +6,7 @@ source "$CURRENT_DIR/helpers.sh"
 DATA_FILE=$(harpoon_data_file)
 
 if [ ! -s "$DATA_FILE" ]; then
-    echo "[H: ]"
+    echo ""
     exit 0
 fi
 
@@ -21,19 +21,20 @@ slot=1
 while IFS= read -r line; do
     [ -z "$line" ] && continue
     session=$(echo "$line" | cut -d: -f1)
-    window_id=$(echo "$line" | cut -d: -f2)
-    name=$(tmux display-message -t "$window_id" -p '#{window_name}' 2>/dev/null)
+    window_index=$(echo "$line" | cut -d: -f2)
+    target_window_id=$(tmux display-message -t "${session}:${window_index}" -p '#{window_id}' 2>/dev/null)
+    name=$(tmux display-message -t "${session}:${window_index}" -p '#{window_name}' 2>/dev/null)
     if [ -z "$name" ]; then
         name="[stale]"
     fi
 
     label="${slot}:[${session}]${name}"
-    if [ "$window_id" = "$current_window_id" ]; then
-        items="${items}#[fg=#a3d9a5]${label}#[fg=default] "
+    if [ "$target_window_id" = "$current_window_id" ]; then
+        items="${items}#[range=user|h${slot}]#[fg=#E6A07A]${label}#[fg=default]#[norange] "
     else
-        items="${items}#[fg=#6885a0]${label}#[fg=default] "
+        items="${items}#[range=user|h${slot}]#[fg=#8B949E]${label}#[fg=default]#[norange] "
     fi
     slot=$((slot + 1))
 done < "$DATA_FILE"
 
-echo "[H: ${items}]"
+echo "${items}"

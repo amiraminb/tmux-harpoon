@@ -10,7 +10,7 @@ Inspired by [ThePrimeagen's harpoon](https://github.com/ThePrimeagen/harpoon) fo
 - Interactive floating popup menu with vim-style keybindings
 - Cut and paste to rearrange entries (`dd` / `p`)
 - Status bar integration
-- Session-lifetime persistence (resets when tmux server restarts)
+- Persistent bookmarks that survive tmux server restarts
 
 ## Requirements
 
@@ -54,3 +54,7 @@ set -g status-left "[#S] #(/path/to/tmux-harpoon/scripts/harpoon-status.sh) "
 ```
 
 The current window is highlighted, others are dimmed.
+
+Bookmarks are stored under `~/.local/state/tmux/harpoon` by default. The list
+uses session names and window indexes so it can be matched to windows restored
+by tmux-resurrect.

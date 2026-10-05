@@ -6,9 +6,9 @@ source "$CURRENT_DIR/helpers.sh"
 DATA_FILE=$(harpoon_data_file)
 
 session=$(tmux display-message -p '#{session_name}')
-window_id=$(tmux display-message -p '#{window_id}')
+window_index=$(tmux display-message -p '#{window_index}')
 
-entry="${session}:${window_id}"
+entry="${session}:${window_index}"
 
 if ! grep -qx "$entry" "$DATA_FILE" 2>/dev/null; then
     tmux display-message "harpoon: not in list"

@@ -12,9 +12,10 @@ if [ ! -s "$DATA_FILE" ]; then
 fi
 
 total=$(grep -c '' "$DATA_FILE")
-current_window_id=$(tmux display-message -p '#{window_id}')
+current_session=$(tmux display-message -p '#{session_name}')
+current_window_index=$(tmux display-message -p '#{window_index}')
 
-current_slot=$(awk -F: -v wid="$current_window_id" '$2 == wid { print NR; exit }' "$DATA_FILE")
+current_slot=$(awk -F: -v session="$current_session" -v index="$current_window_index" '$1 == session && $2 == index { print NR; exit }' "$DATA_FILE")
 
 case "$DIRECTION" in
     next)

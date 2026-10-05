@@ -10,12 +10,11 @@ if [ ! -s "$DATA_FILE" ]; then
 fi
 
 tmp=$(mktemp)
-all_window_ids=$(tmux list-windows -a -F '#{window_id}' 2>/dev/null)
+all_windows=$(tmux list-windows -a -F '#{session_name}:#{window_index}' 2>/dev/null)
 while IFS= read -r line; do
     [ -z "$line" ] && continue
-    window_id=$(echo "$line" | cut -d: -f2)
 
-    if echo "$all_window_ids" | grep -qx "$window_id"; then
+    if printf '%s\n' "$all_windows" | grep -Fqx "$line"; then
         echo "$line" >> "$tmp"
     fi
 done < "$DATA_FILE"
