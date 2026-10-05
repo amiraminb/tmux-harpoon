@@ -15,3 +15,11 @@ done
 
 tmux set-hook -g window-unlinked "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
 tmux set-hook -g after-select-window "refresh-client -S"
+
+# tmux-resurrect allows one command per hook, so never replace one the user already set.
+for hook in post-save-all:harpoon-save.sh post-restore-all:harpoon-restore.sh; do
+    option="@resurrect-hook-${hook%%:*}"
+    if [ -z "$(tmux show-option -gqv "$option")" ]; then
+        tmux set-option -g "$option" "$SCRIPTS_DIR/${hook#*:}"
+    fi
+done

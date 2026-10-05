@@ -10,7 +10,7 @@ Inspired by [ThePrimeagen's harpoon](https://github.com/ThePrimeagen/harpoon) fo
 - Interactive floating popup menu with vim-style keybindings
 - Cut and paste to rearrange entries (`dd` / `p`)
 - Status bar integration
-- Session-lifetime persistence (resets when tmux server restarts)
+- Survives tmux server restarts when used with tmux-resurrect (restored via its `post-save-all` and `post-restore-all` hooks, unless you already use them)
 
 ## Requirements
 
