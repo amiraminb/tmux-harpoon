@@ -13,8 +13,13 @@ for i in $(seq 1 9); do
     tmux bind-key "$i" run-shell "$SCRIPTS_DIR/harpoon-jump.sh $i"
 done
 
-tmux set-hook -g window-unlinked "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
-tmux set-hook -g after-select-window "refresh-client -S"
+index=$(tmux show-option -gqv @harpoon-hook-index)
+index="${index:-21}"
+
+# Indexed hooks: an unindexed `set-hook -g` replaces every entry of that hook,
+# including ones other plugins registered.
+tmux set-hook -g "window-unlinked[$index]" "run-shell '$SCRIPTS_DIR/harpoon-cleanup.sh'"
+tmux set-hook -g "after-select-window[$index]" "refresh-client -S"
 
 # tmux-resurrect allows one command per hook, so never replace one the user already set.
 for hook in post-save-all:harpoon-save.sh post-restore-all:harpoon-restore.sh; do
